@@ -1,8 +1,7 @@
 """Tests for LocalTransport audio/video I/O."""
 
 import asyncio
-from unittest.mock import MagicMock, patch, AsyncMock
-import queue
+from unittest.mock import MagicMock, patch
 
 import numpy as np
 import pytest
@@ -11,28 +10,25 @@ from getstream.video.rtc.track_util import AudioFormat, PcmData
 from tests.base_test import BaseTest
 
 
-# Mock sounddevice before importing local_transport
 @pytest.fixture(autouse=True)
 def mock_sounddevice():
     """Mock sounddevice module for CI compatibility."""
     mock_sd = MagicMock()
     mock_sd.CallbackFlags = MagicMock()
+    mock_sd.PortAudioError = type("PortAudioError", (Exception,), {})
 
-    # Mock InputStream
     mock_input_stream = MagicMock()
     mock_input_stream.start = MagicMock()
     mock_input_stream.stop = MagicMock()
     mock_input_stream.close = MagicMock()
     mock_sd.InputStream.return_value = mock_input_stream
 
-    # Mock OutputStream
     mock_output_stream = MagicMock()
     mock_output_stream.start = MagicMock()
     mock_output_stream.stop = MagicMock()
     mock_output_stream.close = MagicMock()
     mock_sd.OutputStream.return_value = mock_output_stream
 
-    # Mock query_devices
     mock_sd.query_devices.return_value = "Test Device List"
     mock_sd.default = MagicMock()
     mock_sd.default.device = [0, 1]
@@ -278,10 +274,7 @@ class TestLocalTransport(BaseTest):
 
     async def test_publish_tracks_starts_output(self, mock_sounddevice):
         """Test that publish_tracks starts the audio output."""
-        from vision_agents.core.edge.local_transport import (
-            LocalTransport,
-            LocalOutputAudioTrack,
-        )
+        from vision_agents.core.edge.local_transport import LocalTransport
 
         transport = LocalTransport()
         track = transport.create_audio_track()
@@ -396,27 +389,28 @@ class TestAudioReceivedEvent(BaseTest):
         """Test that microphone input emits AudioReceivedEvent."""
         from vision_agents.core.edge.local_transport import LocalTransport
         from vision_agents.core.edge.events import AudioReceivedEvent
+        from vision_agents.core.edge.types import Participant
 
         transport = LocalTransport()
 
-        received_events = []
+        received_events: list[AudioReceivedEvent] = []
 
         @transport.events.subscribe
         async def on_audio(event: AudioReceivedEvent):
             received_events.append(event)
 
-        # Simulate microphone callback
         mock_data = np.array([[100], [200], [300], [400]], dtype=np.int16)
         await transport._microphone_callback_async(mock_data)
 
-        # Give a moment for event to process
         await asyncio.sleep(0.01)
 
         assert len(received_events) == 1
         event = received_events[0]
         assert event.pcm_data is not None
         assert event.participant is not None
+        assert isinstance(event.participant, Participant)
         assert event.participant.user_id == "local-user"
+        assert event.participant.id == "local-session"
 
 
 class TestListAudioDevices(BaseTest):
@@ -424,7 +418,7 @@ class TestListAudioDevices(BaseTest):
 
     def test_list_audio_devices(self, mock_sounddevice, capsys):
         """Test listing audio devices."""
-        from vision_agents.core.edge.local_transport import list_audio_devices
+        from vision_agents.core.edge.local_devices import list_audio_devices
 
         list_audio_devices()
 
@@ -538,17 +532,16 @@ class TestCameraEnumeration(BaseTest):
     def test_list_cameras_returns_list(self, mock_sounddevice):
         """Test that list_cameras returns a list."""
         with patch(
-            "vision_agents.core.edge.local_transport.PYAV_AVAILABLE", True
+            "vision_agents.core.edge.local_devices.PYAV_AVAILABLE", True
         ):
             with patch("subprocess.run") as mock_run:
-                # Mock ffmpeg output
                 mock_run.return_value = MagicMock(
                     stderr="[AVFoundation video devices:]\n"
                     "[AVFoundation @ 0x1] [0] FaceTime HD Camera\n"
                     "[AVFoundation audio devices:]\n"
                 )
 
-                from vision_agents.core.edge.local_transport import list_cameras
+                from vision_agents.core.edge.local_devices import list_cameras
 
                 with patch("platform.system", return_value="Darwin"):
                     cameras = list_cameras()
