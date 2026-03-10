@@ -356,7 +356,11 @@ class StreamEdge(EdgeTransport[StreamCall]):
             )
         )
 
-    async def create_conversation(self, call: Call, user: User, instructions: str):
+    async def create_conversation(
+        self, call: Optional[Call], user: User, instructions: str
+    ):
+        if call is None:
+            raise ValueError("Stream edge requires a call")
         channel = self.client.chat.channel(self.channel_type, call.id)
         await channel.get_or_create(
             data=ChannelInput(created_by_id=user.id),
@@ -392,8 +396,7 @@ class StreamEdge(EdgeTransport[StreamCall]):
     async def join(
         self, agent: "Agent", call: StreamCall, **kwargs
     ) -> StreamConnection:
-        """Join a GetStream call and establish a WebRTC connection.
-        """
+        """Join a GetStream call and establish a WebRTC connection."""
 
         # Traditional mode - use WebRTC connection
         # Configure subscription for audio and video

@@ -43,8 +43,7 @@ def _check_pyav() -> None:
     """Raise ImportError if PyAV is not available."""
     if not PYAV_AVAILABLE:
         raise ImportError(
-            "PyAV is required for camera support. "
-            "Install it with: pip install av"
+            "PyAV is required for camera support. Install it with: pip install av"
         )
 
 
@@ -105,7 +104,7 @@ def select_audio_devices() -> tuple[int | None, int | None]:
     while True:
         try:
             choice = input(
-                f"Select INPUT device [0-{len(input_devices)-1}] (Enter for default): "
+                f"Select INPUT device [0-{len(input_devices) - 1}] (Enter for default): "
             ).strip()
             if choice == "":
                 input_device = None
@@ -116,7 +115,7 @@ def select_audio_devices() -> tuple[int | None, int | None]:
                 input_device = input_devices[idx]
                 print(f"  -> Selected: {devices[input_device]['name']}")
                 break
-            print(f"  Invalid choice, enter 0-{len(input_devices)-1} or press Enter")
+            print(f"  Invalid choice, enter 0-{len(input_devices) - 1} or press Enter")
         except ValueError:
             print("  Please enter a number or press Enter")
 
@@ -124,7 +123,7 @@ def select_audio_devices() -> tuple[int | None, int | None]:
     while True:
         try:
             choice = input(
-                f"Select OUTPUT device [0-{len(output_devices)-1}] (Enter for default): "
+                f"Select OUTPUT device [0-{len(output_devices) - 1}] (Enter for default): "
             ).strip()
             if choice == "":
                 output_device = None
@@ -135,7 +134,7 @@ def select_audio_devices() -> tuple[int | None, int | None]:
                 output_device = output_devices[idx]
                 print(f"  -> Selected: {devices[output_device]['name']}")
                 break
-            print(f"  Invalid choice, enter 0-{len(output_devices)-1} or press Enter")
+            print(f"  Invalid choice, enter 0-{len(output_devices) - 1} or press Enter")
         except ValueError:
             print("  Please enter a number or press Enter")
 
@@ -185,11 +184,13 @@ def list_cameras() -> list[dict[str, Any]]:
                         if idx_part.startswith("["):
                             try:
                                 cam_idx = int(idx_part.strip("[]"))
-                                cameras.append({
-                                    "index": cam_idx,
-                                    "name": name_part,
-                                    "device": str(cam_idx),
-                                })
+                                cameras.append(
+                                    {
+                                        "index": cam_idx,
+                                        "name": name_part,
+                                        "device": str(cam_idx),
+                                    }
+                                )
                             except ValueError:
                                 pass
         except (subprocess.TimeoutExpired, FileNotFoundError):
@@ -204,11 +205,13 @@ def list_cameras() -> list[dict[str, Any]]:
                     name = f.read().strip()
             except OSError:
                 name = dev_path
-            cameras.append({
-                "index": i,
-                "name": name,
-                "device": dev_path,
-            })
+            cameras.append(
+                {
+                    "index": i,
+                    "name": name,
+                    "device": dev_path,
+                }
+            )
 
     elif system == "Windows":
         try:
@@ -232,11 +235,13 @@ def list_cameras() -> list[dict[str, Any]]:
                     end = line.rfind('"')
                     if start != -1 and end > start:
                         name = line[start + 1 : end]
-                        cameras.append({
-                            "index": cam_idx,
-                            "name": name,
-                            "device": f'video="{name}"',
-                        })
+                        cameras.append(
+                            {
+                                "index": cam_idx,
+                                "name": name,
+                                "device": f'video="{name}"',
+                            }
+                        )
                         cam_idx += 1
         except (subprocess.TimeoutExpired, FileNotFoundError):
             logger.warning("Failed to list cameras (is ffmpeg installed?)")
@@ -273,7 +278,7 @@ def select_video_device() -> str | None:
     while True:
         try:
             choice = (
-                input(f"Select CAMERA [0-{len(cameras)-1}] or 'n' to skip: ")
+                input(f"Select CAMERA [0-{len(cameras) - 1}] or 'n' to skip: ")
                 .strip()
                 .lower()
             )
@@ -287,6 +292,6 @@ def select_video_device() -> str | None:
                 print(f"  -> Selected: {selected['name']}")
                 print("-" * 50 + "\n")
                 return selected["device"]
-            print(f"  Invalid choice, enter 0-{len(cameras)-1} or 'n'")
+            print(f"  Invalid choice, enter 0-{len(cameras) - 1} or 'n'")
         except ValueError:
             print("  Please enter a number or 'n'")

@@ -298,7 +298,9 @@ class TestLocalTransport(BaseTest):
         # Should not raise
         await transport.authenticate(user)
 
-    async def test_add_track_subscriber_returns_none_for_unknown(self, mock_sounddevice):
+    async def test_add_track_subscriber_returns_none_for_unknown(
+        self, mock_sounddevice
+    ):
         """Test that add_track_subscriber returns None for unknown track IDs."""
         from vision_agents.core.edge.local_transport import LocalTransport
 
@@ -307,12 +309,12 @@ class TestLocalTransport(BaseTest):
 
         assert result is None
 
-    async def test_add_track_subscriber_returns_video_track(self, mock_sounddevice, mock_av):
+    async def test_add_track_subscriber_returns_video_track(
+        self, mock_sounddevice, mock_av
+    ):
         """Test that add_track_subscriber returns video track for local-video."""
         with patch.dict("sys.modules", {"av": mock_av}):
-            with patch(
-                "vision_agents.core.edge.local_transport.PYAV_AVAILABLE", True
-            ):
+            with patch("vision_agents.core.edge.local_transport.PYAV_AVAILABLE", True):
                 with patch(
                     "vision_agents.core.edge.local_transport.AIORTC_AVAILABLE", True
                 ):
@@ -433,9 +435,7 @@ class TestLocalVideoTrack(BaseTest):
     async def test_video_track_initialization(self, mock_sounddevice, mock_av):
         """Test creating a video track."""
         with patch.dict("sys.modules", {"av": mock_av}):
-            with patch(
-                "vision_agents.core.edge.local_transport.PYAV_AVAILABLE", True
-            ):
+            with patch("vision_agents.core.edge.local_transport.PYAV_AVAILABLE", True):
                 with patch(
                     "vision_agents.core.edge.local_transport.AIORTC_AVAILABLE", True
                 ):
@@ -443,9 +443,7 @@ class TestLocalVideoTrack(BaseTest):
                         LocalVideoTrack,
                     )
 
-                    track = LocalVideoTrack(
-                        device="0", width=640, height=480, fps=30
-                    )
+                    track = LocalVideoTrack(device="0", width=640, height=480, fps=30)
 
                     assert track._device == "0"
                     assert track._width == 640
@@ -457,9 +455,7 @@ class TestLocalVideoTrack(BaseTest):
     async def test_video_track_stop(self, mock_sounddevice, mock_av):
         """Test stopping a video track."""
         with patch.dict("sys.modules", {"av": mock_av}):
-            with patch(
-                "vision_agents.core.edge.local_transport.PYAV_AVAILABLE", True
-            ):
+            with patch("vision_agents.core.edge.local_transport.PYAV_AVAILABLE", True):
                 with patch(
                     "vision_agents.core.edge.local_transport.AIORTC_AVAILABLE", True
                 ):
@@ -509,9 +505,7 @@ class TestLocalTransportVideo(BaseTest):
     async def test_create_video_track_with_device(self, mock_sounddevice, mock_av):
         """Test creating a video track when device is configured."""
         with patch.dict("sys.modules", {"av": mock_av}):
-            with patch(
-                "vision_agents.core.edge.local_transport.PYAV_AVAILABLE", True
-            ):
+            with patch("vision_agents.core.edge.local_transport.PYAV_AVAILABLE", True):
                 with patch(
                     "vision_agents.core.edge.local_transport.AIORTC_AVAILABLE", True
                 ):
@@ -531,9 +525,7 @@ class TestCameraEnumeration(BaseTest):
 
     def test_list_cameras_returns_list(self, mock_sounddevice):
         """Test that list_cameras returns a list."""
-        with patch(
-            "vision_agents.core.edge.local_devices.PYAV_AVAILABLE", True
-        ):
+        with patch("vision_agents.core.edge.local_devices.PYAV_AVAILABLE", True):
             with patch("subprocess.run") as mock_run:
                 mock_run.return_value = MagicMock(
                     stderr="[AVFoundation video devices:]\n"

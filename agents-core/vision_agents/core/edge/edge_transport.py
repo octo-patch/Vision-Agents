@@ -128,7 +128,9 @@ class EdgeTransport(abc.ABC, Generic[T_Call]):
         pass
 
     @abc.abstractmethod
-    async def create_conversation(self, call: Call, user: User, instructions: str):
+    async def create_conversation(
+        self, call: Optional[Call], user: User, instructions: str
+    ):
         pass
 
     @abc.abstractmethod

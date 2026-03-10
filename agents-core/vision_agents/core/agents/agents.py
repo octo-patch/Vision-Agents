@@ -631,7 +631,9 @@ class Agent:
 
     @asynccontextmanager
     async def join(
-        self, call: Optional[Call] = None, participant_wait_timeout: Optional[float] = 10.0
+        self,
+        call: Optional[Call] = None,
+        participant_wait_timeout: Optional[float] = 10.0,
     ) -> AsyncIterator[None]:
         """
         Join the given call.

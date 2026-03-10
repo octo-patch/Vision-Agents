@@ -67,8 +67,7 @@ def _check_pyav() -> None:
     """Raise ImportError if PyAV is not available."""
     if not PYAV_AVAILABLE:
         raise ImportError(
-            "PyAV is required for camera support. "
-            "Install it with: pip install av"
+            "PyAV is required for camera support. Install it with: pip install av"
         )
 
 
@@ -316,7 +315,9 @@ class LocalVideoTrack(VideoStreamTrack):
         frame = await self._loop.run_in_executor(None, self._read_frame)
 
         if frame is None:
-            frame = av.VideoFrame(width=self._width, height=self._height, format="rgb24")
+            frame = av.VideoFrame(
+                width=self._width, height=self._height, format="rgb24"
+            )
             frame.planes[0].update(bytes(self._width * self._height * 3))
 
         self._frame_count += 1
@@ -441,18 +442,14 @@ class LocalTransport(EdgeTransport):
             logger.warning("Audio input status: %s", status)
 
         if self._running and self._loop is not None:
-            self._loop.call_soon_threadsafe(
-                self._input_queue.put_nowait, indata.copy()
-            )
+            self._loop.call_soon_threadsafe(self._input_queue.put_nowait, indata.copy())
 
     async def _microphone_loop(self) -> None:
         """Process microphone input from the queue."""
         try:
             while self._running:
                 try:
-                    data = await asyncio.wait_for(
-                        self._input_queue.get(), timeout=0.1
-                    )
+                    data = await asyncio.wait_for(self._input_queue.get(), timeout=0.1)
                     await self._microphone_callback_async(data)
                 except asyncio.TimeoutError:
                     continue
@@ -562,7 +559,9 @@ class LocalTransport(EdgeTransport):
             return self._video_track
         return None
 
-    async def join(self, agent: "Agent", call: Any = None, **kwargs: Any) -> LocalConnection:  # type: ignore[override]
+    async def join(
+        self, agent: "Agent", call: Any = None, **kwargs: Any
+    ) -> LocalConnection:  # type: ignore[override]
         """Start microphone capture and optionally camera."""
         await self._start_audio()
 
