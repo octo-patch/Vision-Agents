@@ -59,7 +59,7 @@ ELEVENLABS_API_KEY=your_elevenlabs_api_key
 2. Install dependencies:
 
 ```bash
-cd examples/09_local_transport_example
+cd examples/10_local_transport_example
 uv sync
 ```
 
