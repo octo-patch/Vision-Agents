@@ -23,12 +23,12 @@ from typing import Any, Dict, Optional
 from dotenv import load_dotenv
 
 from vision_agents.core import Agent, User
-from vision_agents.core.edge.local_transport import (
-    LocalTransport,
+from vision_agents.core.edge.local_devices import (
     get_device_sample_rate,
     select_audio_devices,
     select_video_device,
 )
+from vision_agents.core.edge.local_transport import LocalTransport
 from vision_agents.core.utils.examples import get_weather_by_location
 from vision_agents.plugins import deepgram, elevenlabs, gemini
 
@@ -48,7 +48,7 @@ async def create_agent(
     video_device: Optional[str] = None,
 ) -> Agent:
     """Create an agent with LocalTransport for local audio/video I/O."""
-    llm = gemini.LLM("gemini-2.5-flash-lite")
+    llm = gemini.LLM()
 
     # Get device sample rates to ensure proper configuration
     input_sample_rate = get_device_sample_rate(input_device, is_input=True)
