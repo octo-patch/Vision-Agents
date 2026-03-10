@@ -28,7 +28,6 @@ from vision_agents.core.llm import realtime
 from vision_agents.core.llm.events import LLMResponseChunkEvent
 from vision_agents.core.llm.llm import LLMResponseEvent
 from vision_agents.core.llm.llm_types import ToolSchema
-from vision_agents.core.processors import Processor
 
 logger = logging.getLogger(__name__)
 
@@ -317,7 +316,6 @@ class XAIRealtime(realtime.Realtime):
     async def simple_response(
         self,
         text: str,
-        processors: Optional[list[Processor]] = None,
         participant: Optional[Participant] = None,
     ) -> LLMResponseEvent[Any]:
         """
@@ -325,7 +323,6 @@ class XAIRealtime(realtime.Realtime):
 
         Args:
             text: Text message to send.
-            processors: Optional list of processors (unused).
             participant: Optional participant information.
 
         Returns:
@@ -457,7 +454,9 @@ class XAIRealtime(realtime.Realtime):
                 # User speech transcription
                 transcript = data.get("transcript", "")
                 if transcript:
-                    self._emit_user_speech_transcription(text=transcript, original=data)
+                    self._emit_user_speech_transcription(
+                        text=transcript, mode="final", original=data
+                    )
 
             elif event_type == "input_audio_buffer.speech_started":
                 logger.debug("Speech started detected")
@@ -478,13 +477,20 @@ class XAIRealtime(realtime.Realtime):
                 logger.debug("Response output item added")
 
             elif event_type == "response.output_audio_transcript.delta":
-                # Agent speech transcript delta
                 delta = data.get("delta", "")
                 if delta:
-                    self._emit_agent_speech_transcription(text=delta, original=data)
+                    self._emit_agent_speech_transcription(
+                        text=delta,
+                        mode="delta",
+                        original=data,
+                    )
 
             elif event_type == "response.output_audio_transcript.done":
-                logger.debug("Agent transcript complete")
+                self._emit_agent_speech_transcription(
+                    text="",
+                    mode="final",
+                    original=data,
+                )
 
             elif event_type == "response.output_audio.delta":
                 # Audio output from the model

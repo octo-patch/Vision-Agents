@@ -38,7 +38,6 @@ from vision_agents.core.llm.events import (
 )
 from vision_agents.core.llm.llm import LLMResponseEvent
 from vision_agents.core.llm.llm_types import ToolSchema
-from vision_agents.core.processors import Processor
 from vision_agents.core.utils.video_forwarder import VideoForwarder
 from vision_agents.core.utils.video_utils import frame_to_png_bytes
 
@@ -175,7 +174,6 @@ class GeminiRealtime(realtime.Realtime):
     async def simple_response(
         self,
         text: str,
-        processors: Optional[list[Processor]] = None,
         participant: Optional[Participant] = None,
     ) -> LLMResponseEvent[Any]:
         """
@@ -403,7 +401,9 @@ class GeminiRealtime(realtime.Realtime):
                     text = server_message.server_content.input_transcription.text
                     if text:
                         self._emit_user_speech_transcription(
-                            text=text, original=server_message
+                            text=text,
+                            mode="delta",
+                            original=server_message,
                         )
             elif is_output_transcript:
                 if (
@@ -413,7 +413,9 @@ class GeminiRealtime(realtime.Realtime):
                     text = server_message.server_content.output_transcription.text
                     if text:
                         self._emit_agent_speech_transcription(
-                            text=text, original=server_message
+                            text=text,
+                            mode="delta",
+                            original=server_message,
                         )
             elif is_response:
                 # Store the resumption id so we can resume a broken connection

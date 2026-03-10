@@ -35,13 +35,15 @@ vision-agents-plugins-twilio = { workspace = true }
 vision-agents-plugins-turbopuffer = { workspace = true }
 vision-agents-plugins-nvidia = { workspace = true }
 vision-agents-plugins-mistral = { workspace = true }
+vision-agents-plugins-assemblyai = { workspace = true }
 
 [tool.uv]
 # Workspace-level override to resolve numpy version conflicts
 # vogent-turn requires numpy<2.0, so we override to use 1.26.x
-override-dependencies = [
-    "numpy>=1.26.0,<2.0"
-]
+override-dependencies = ["numpy>=1.26.0,<2.0"]
+
+# Store uv cache in project directory for better sandboxing
+cache-dir = ".uv-cache"
 
 [tool.uv.workspace]
 members = [
@@ -76,6 +78,7 @@ members = [
     "plugins/turbopuffer",
     "plugins/nvidia",
     "plugins/mistral",
+    "plugins/assemblyai",
 ]
 exclude = [
     "**/__pycache__",

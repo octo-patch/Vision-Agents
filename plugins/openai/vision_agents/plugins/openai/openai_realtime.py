@@ -1,6 +1,6 @@
 import json
 import logging
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, Optional, Union
 
 import aiortc
 from dotenv import load_dotenv
@@ -28,7 +28,6 @@ from openai.types.realtime.realtime_transcription_session_audio_input_turn_detec
 from vision_agents.core.edge.types import Participant
 from vision_agents.core.instructions import Instructions
 from vision_agents.core.llm import realtime
-from vision_agents.core.processors import Processor
 from vision_agents.core.utils.video_forwarder import VideoForwarder
 
 from .rtc_manager import RTCManager
@@ -160,7 +159,6 @@ class Realtime(realtime.Realtime):
     async def simple_response(
         self,
         text: str,
-        processors: Optional[List[Processor]] = None,
         participant: Optional[Participant] = None,
     ):
         """Send a simple text input to the OpenAI Realtime session.
@@ -172,8 +170,6 @@ class Realtime(realtime.Realtime):
 
         Args:
             text: Text prompt to send.
-            processors: Optional processors list (not used here; included for
-                interface parity with the core `LLM` API).
             participant: Optional participant metadata (ignored here).
         """
         await self.rtc.send_text(text)
@@ -232,7 +228,7 @@ class Realtime(realtime.Realtime):
                 ResponseAudioTranscriptDoneEvent.model_validate(event_copy)
             )
             self._emit_agent_speech_transcription(
-                text=transcript_event.transcript, original=event
+                text=transcript_event.transcript, mode="final", original=event
             )
             self._emit_response_event(
                 text=transcript_event.transcript,
@@ -258,7 +254,7 @@ class Realtime(realtime.Realtime):
             # _current_participant is kept up-to-date in simple_audio_response
             # so it will be used by _emit_user_speech_transcription
             self._emit_user_speech_transcription(
-                text=user_transcript_event.transcript, original=event
+                text=user_transcript_event.transcript, mode="final", original=event
             )
         elif et == "input_audio_buffer.speech_started":
             # Validate event but don't need to store it

@@ -1,5 +1,5 @@
 version = 1
-revision = 2
+revision = 3
 requires-python = ">=3.12"
 resolution-markers = [
     "python_full_version >= '3.14' and sys_platform == 'win32'",
@@ -14,6 +14,7 @@ resolution-markers = [
 members = [
     "vision-agents",
     "vision-agents-plugins-anthropic",
+    "vision-agents-plugins-assemblyai",
     "vision-agents-plugins-aws",
     "vision-agents-plugins-cartesia",
     "vision-agents-plugins-decart",
@@ -440,14 +441,14 @@ wheels = [
 
 [[package]]
 name = "authlib"
-version = "1.6.6"
+version = "1.6.7"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "cryptography" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/bb/9b/b1661026ff24bc641b76b78c5222d614776b0c085bcfdac9bd15a1cb4b35/authlib-1.6.6.tar.gz", hash = "sha256:45770e8e056d0f283451d9996fbb59b70d45722b45d854d58f32878d0a40c38e", size = 164894, upload-time = "2025-12-12T08:01:41.464Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/49/dc/ed1681bf1339dd6ea1ce56136bad4baabc6f7ad466e375810702b0237047/authlib-1.6.7.tar.gz", hash = "sha256:dbf10100011d1e1b34048c9d120e83f13b35d69a826ae762b93d2fb5aafc337b", size = 164950, upload-time = "2026-02-06T14:04:14.171Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/54/51/321e821856452f7386c4e9df866f196720b1ad0c5ea1623ea7399969ae3b/authlib-1.6.6-py2.py3-none-any.whl", hash = "sha256:7d9e9bc535c13974313a87f53e8430eb6ea3d1cf6ae4f6efcd793f2e949143fd", size = 244005, upload-time = "2025-12-12T08:01:40.209Z" },
+    { url = "https://files.pythonhosted.org/packages/f8/00/3ed12264094ec91f534fae429945efbaa9f8c666f3aa7061cc3b2a26a0cd/authlib-1.6.7-py2.py3-none-any.whl", hash = "sha256:c637340d9a02789d2efa1d003a7437d10d3e565237bcb5fcbc6c134c7b95bab0", size = 244115, upload-time = "2026-02-06T14:04:12.141Z" },
 ]
 
 [[package]]
@@ -6049,22 +6050,6 @@ wheels = [
 ]
 
 [[package]]
-name = "sounddevice"
-version = "0.5.5"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "cffi" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/2a/f9/2592608737553638fca98e21e54bfec40bf577bb98a61b2770c912aab25e/sounddevice-0.5.5.tar.gz", hash = "sha256:22487b65198cb5bf2208755105b524f78ad173e5ab6b445bdab1c989f6698df3", size = 143191, upload-time = "2026-01-23T18:36:43.529Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/1e/0a/478e441fd049002cf308520c0d62dd8333e7c6cc8d997f0dda07b9fbcc46/sounddevice-0.5.5-py3-none-any.whl", hash = "sha256:30ff99f6c107f49d25ad16a45cacd8d91c25a1bcdd3e81a206b921a3a6405b1f", size = 32807, upload-time = "2026-01-23T18:36:35.649Z" },
-    { url = "https://files.pythonhosted.org/packages/56/f9/c037c35f6d0b6bc3bc7bfb314f1d6f1f9a341328ef47cd63fc4f850a7b27/sounddevice-0.5.5-py3-none-macosx_10_6_x86_64.macosx_10_6_universal2.whl", hash = "sha256:05eb9fd6c54c38d67741441c19164c0dae8ce80453af2d8c4ad2e7823d15b722", size = 108557, upload-time = "2026-01-23T18:36:37.41Z" },
-    { url = "https://files.pythonhosted.org/packages/88/a1/d19dd9889cd4bce2e233c4fac007cd8daaf5b9fe6e6a5d432cf17be0b807/sounddevice-0.5.5-py3-none-win32.whl", hash = "sha256:1234cc9b4c9df97b6cbe748146ae0ec64dd7d6e44739e8e42eaa5b595313a103", size = 317765, upload-time = "2026-01-23T18:36:39.047Z" },
-    { url = "https://files.pythonhosted.org/packages/c3/0e/002ed7c4c1c2ab69031f78989d3b789fee3a7fba9e586eb2b81688bf4961/sounddevice-0.5.5-py3-none-win_amd64.whl", hash = "sha256:cfc6b2c49fb7f555591c78cb8ecf48d6a637fd5b6e1db5fec6ed9365d64b3519", size = 365324, upload-time = "2026-01-23T18:36:40.496Z" },
-    { url = "https://files.pythonhosted.org/packages/4e/39/a61d4b83a7746b70d23d9173be688c0c6bfc7173772344b7442c2c155497/sounddevice-0.5.5-py3-none-win_arm64.whl", hash = "sha256:3861901ddd8230d2e0e8ae62ac320cdd4c688d81df89da036dcb812f757bb3e6", size = 317115, upload-time = "2026-01-23T18:36:42.235Z" },
-]
-
-[[package]]
 name = "soundfile"
 version = "0.13.1"
 source = { registry = "https://pypi.org/simple" }
@@ -6946,6 +6931,7 @@ dependencies = [
 [package.optional-dependencies]
 all-plugins = [
     { name = "vision-agents-plugins-anthropic" },
+    { name = "vision-agents-plugins-assemblyai" },
     { name = "vision-agents-plugins-aws" },
     { name = "vision-agents-plugins-cartesia" },
     { name = "vision-agents-plugins-decart" },
@@ -6979,6 +6965,9 @@ all-plugins = [
 ]
 anthropic = [
     { name = "vision-agents-plugins-anthropic" },
+]
+assemblyai = [
+    { name = "vision-agents-plugins-assemblyai" },
 ]
 aws = [
     { name = "vision-agents-plugins-aws" },
@@ -7027,9 +7016,6 @@ kokoro = [
 ]
 lemonslice = [
     { name = "vision-agents-plugins-lemonslice" },
-]
-local = [
-    { name = "sounddevice" },
 ]
 mistral = [
     { name = "vision-agents-plugins-mistral" },
@@ -7088,7 +7074,7 @@ requires-dist = [
     { name = "click", marker = "extra == 'dev'" },
     { name = "colorlog", specifier = ">=6.10.1" },
     { name = "fastapi", specifier = ">=0.128.0" },
-    { name = "getstream", extras = ["telemetry", "webrtc"], specifier = ">=2.5.16" },
+    { name = "getstream", extras = ["telemetry", "webrtc"], specifier = ">=2.5.16,<3" },
     { name = "mcp", specifier = ">=1.23.3" },
     { name = "mypy", marker = "extra == 'dev'" },
     { name = "numpy", specifier = ">=1.24.0" },
@@ -7098,11 +7084,12 @@ requires-dist = [
     { name = "python-dotenv", specifier = ">=1.1.1" },
     { name = "redis", extras = ["hiredis"], marker = "extra == 'redis'", specifier = ">=5.0.0" },
     { name = "ruff", marker = "extra == 'dev'" },
-    { name = "sounddevice", marker = "extra == 'local'", specifier = ">=0.5.0" },
     { name = "urllib3", specifier = ">=2.6.3" },
     { name = "uvicorn", specifier = ">=0.38.0" },
     { name = "vision-agents-plugins-anthropic", marker = "extra == 'all-plugins'", editable = "plugins/anthropic" },
     { name = "vision-agents-plugins-anthropic", marker = "extra == 'anthropic'", editable = "plugins/anthropic" },
+    { name = "vision-agents-plugins-assemblyai", marker = "extra == 'all-plugins'", editable = "plugins/assemblyai" },
+    { name = "vision-agents-plugins-assemblyai", marker = "extra == 'assemblyai'", editable = "plugins/assemblyai" },
     { name = "vision-agents-plugins-aws", marker = "extra == 'all-plugins'", editable = "plugins/aws" },
     { name = "vision-agents-plugins-aws", marker = "extra == 'aws'", editable = "plugins/aws" },
     { name = "vision-agents-plugins-cartesia", marker = "extra == 'all-plugins'", editable = "plugins/cartesia" },
@@ -7164,7 +7151,7 @@ requires-dist = [
     { name = "vision-agents-plugins-xai", marker = "extra == 'all-plugins'", editable = "plugins/xai" },
     { name = "vision-agents-plugins-xai", marker = "extra == 'xai'", editable = "plugins/xai" },
 ]
-provides-extras = ["all-plugins", "anthropic", "aws", "cartesia", "decart", "deepgram", "dev", "elevenlabs", "fast-whisper", "fish", "gemini", "getstream", "heygen", "huggingface", "inworld", "kokoro", "lemonslice", "local", "mistral", "moondream", "moonshine", "nvidia", "openai", "openrouter", "pocket", "qwen", "redis", "roboflow", "smart-turn", "turbopuffer", "twilio", "ultralytics", "vogent", "wizper", "xai"]
+provides-extras = ["all-plugins", "anthropic", "assemblyai", "aws", "cartesia", "decart", "deepgram", "dev", "elevenlabs", "fast-whisper", "fish", "gemini", "getstream", "heygen", "huggingface", "inworld", "kokoro", "lemonslice", "mistral", "moondream", "moonshine", "nvidia", "openai", "openrouter", "pocket", "qwen", "redis", "roboflow", "smart-turn", "turbopuffer", "twilio", "ultralytics", "vogent", "wizper", "xai"]
 
 [[package]]
 name = "vision-agents-plugins-anthropic"
@@ -7190,6 +7177,38 @@ requires-dist = [
 dev = [
     { name = "pytest", specifier = ">=8.4.1" },
     { name = "pytest-asyncio", specifier = ">=1.0.0" },
+]
+
+[[package]]
+name = "vision-agents-plugins-assemblyai"
+source = { editable = "plugins/assemblyai" }
+dependencies = [
+    { name = "aiohttp" },
+    { name = "vision-agents" },
+]
+
+[package.dev-dependencies]
+dev = [
+    { name = "pytest" },
+    { name = "pytest-asyncio" },
+    { name = "scipy" },
+    { name = "soundfile" },
+    { name = "torchvision" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "aiohttp", specifier = ">=3.9.0" },
+    { name = "vision-agents", editable = "agents-core" },
+]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "pytest", specifier = ">=8.4.1" },
+    { name = "pytest-asyncio", specifier = ">=1.0.0" },
+    { name = "scipy", specifier = ">=1.15.3,<1.16" },
+    { name = "soundfile", specifier = ">=0.13.1" },
+    { name = "torchvision", specifier = ">=0.20.0" },
 ]
 
 [[package]]
@@ -7430,7 +7449,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "getstream", extras = ["telemetry", "webrtc"], specifier = ">=2.5.21" },
+    { name = "getstream", extras = ["telemetry", "webrtc"], specifier = ">=2.5.21,<3" },
     { name = "vision-agents", editable = "agents-core" },
 ]
 
@@ -7479,12 +7498,16 @@ dependencies = [
 [package.optional-dependencies]
 transformers = [
     { name = "accelerate" },
+    { name = "opencv-python" },
+    { name = "supervision" },
     { name = "torch" },
     { name = "transformers" },
 ]
 transformers-quantized = [
     { name = "accelerate" },
     { name = "bitsandbytes" },
+    { name = "opencv-python" },
+    { name = "supervision" },
     { name = "torch" },
     { name = "transformers" },
 ]
@@ -7501,6 +7524,10 @@ requires-dist = [
     { name = "accelerate", marker = "extra == 'transformers-quantized'", specifier = ">=0.25.0" },
     { name = "bitsandbytes", marker = "extra == 'transformers-quantized'", specifier = ">=0.41.0" },
     { name = "huggingface-hub", specifier = "<1.0" },
+    { name = "opencv-python", marker = "extra == 'transformers'", specifier = ">=4.8.0" },
+    { name = "opencv-python", marker = "extra == 'transformers-quantized'", specifier = ">=4.8.0" },
+    { name = "supervision", marker = "extra == 'transformers'", specifier = ">=0.21.0" },
+    { name = "supervision", marker = "extra == 'transformers-quantized'", specifier = ">=0.21.0" },
     { name = "torch", marker = "extra == 'transformers'", specifier = ">=2.0.0" },
     { name = "torch", marker = "extra == 'transformers-quantized'", specifier = ">=2.0.0" },
     { name = "transformers", marker = "extra == 'transformers'", specifier = ">=4.45.0" },
